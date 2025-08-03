@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>News Advance: An Interactive Project Memoir</title>
     <!-- Chosen Palette: Calm Neutral (Light slate/gray background, dark slate text, muted teal accent) -->
-    <!-- Application Structure Plan: A single-page "Project Journey" dashboard. The structure is thematic, not chronological, using a top navigation bar (The Problem, Our Solution, The Tech, The AI, The Future) to guide users. This non-linear approach allows users to explore the project's aspects in any order, enhancing engagement. Key interactions include hover-to-reveal tooltips for the tech stack, an interactive diagram for the AI development story, and accordions for future plans. This is more usable than a long, scrolling document because it breaks down complex information into digestible, interactive chunks. -->
-    <!-- Visualization & Content Choices: Report Info: Project's core problem -> Goal: Inform -> Viz: Icon-driven text cards. Interaction: Static. Justification: Quickly establishes context. | Report Info: Tech stack list -> Goal: Organize/Inform -> Viz: Grid of icons with text. Interaction: Hover for tooltips. Justification: More visually engaging than a list. | Report Info: ROUGE scores -> Goal: Compare/Inform -> Viz: Chart.js horizontal bar chart. Interaction: Static chart. Justification: Quantifies model performance visually. | Report Info: AI pivot narrative -> Goal: Explain Change -> Viz: HTML/CSS diagram. Interaction: Static visual flow. Justification: Clearly illustrates the strategic decision. | Report Info: Future plans -> Goal: Organize -> Viz: Accordion. Interaction: Click to expand. Justification: Keeps the UI clean, allows drill-down. Library/Method: Chart.js for the chart, Vanilla JS and Tailwind for all other interactions and diagrams. -->
+    <!-- Application Structure Plan: A single-page "Project Journey" dashboard. The structure is thematic, using a top navigation bar to guide users. A new "Live AI Analysis" section is added, featuring a textarea and a button to call the Gemini API. This allows users to directly engage with a core concept of the report (AI analysis) in a hands-on manner. This enhances the original structure by adding a powerful interactive element that demonstrates the project's goals with live data. -->
+    <!-- Visualization & Content Choices: Report Info: Project's core problem -> Goal: Inform -> Viz: Icon-driven text cards. | Report Info: Tech stack list -> Goal: Organize/Inform -> Viz: Grid with hover tooltips. | Report Info: ROUGE scores -> Goal: Compare/Inform -> Viz: Chart.js bar chart. | Report Info: AI pivot narrative -> Goal: Explain Change -> Viz: HTML/CSS diagram. | Report Info: Future plans -> Goal: Organize -> Viz: Accordion. | NEW FEATURE: Live News Analysis -> Goal: Demonstrate/Engage -> Viz: Textarea input with a dynamic results view populated by a Gemini API call. Interaction: User inputs text, clicks a button, and sees a structured JSON response (summary, bias, sentiment, fallacies) rendered in styled cards. Justification: This provides a "wow" factor and makes the abstract concept of AI analysis tangible. Library/Method: Chart.js, Vanilla JS, and the Gemini API via fetch. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -36,6 +36,18 @@
             overflow: hidden;
             transition: max-height 0.5s ease-in-out;
         }
+        .loader {
+            border: 4px solid #f3f3f3; /* Light grey */
+            border-top: 4px solid #0d9488; /* Teal */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body class="text-slate-700">
@@ -52,6 +64,7 @@
                         <a href="#solution" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-teal-600 transition-colors">Our Solution</a>
                         <a href="#tech" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-teal-600 transition-colors">The Tech</a>
                         <a href="#ai-journey" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-teal-600 transition-colors">The AI Journey</a>
+                        <a href="#live-analysis" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-teal-600 transition-colors">Live Analysis ✨</a>
                         <a href="#future" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-teal-600 transition-colors">The Future</a>
                     </div>
                 </div>
@@ -69,6 +82,7 @@
                 <a href="#solution" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:text-teal-600">Our Solution</a>
                 <a href="#tech" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:text-teal-600">The Tech</a>
                 <a href="#ai-journey" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:text-teal-600">The AI Journey</a>
+                <a href="#live-analysis" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:text-teal-600">Live Analysis ✨</a>
                 <a href="#future" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:text-teal-600">The Future</a>
             </div>
         </div>
@@ -212,6 +226,53 @@
             </div>
         </section>
 
+        <section id="live-analysis" class="py-16 section-fade-in">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-slate-900">Live AI Analysis ✨</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg">Paste in text from a news article below and get a real-time analysis powered by the Gemini API.</p>
+            </div>
+            <div class="mt-12 max-w-4xl mx-auto">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <textarea id="article-input" class="w-full h-48 p-3 border border-slate-300 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition" placeholder="Paste your article text here..."></textarea>
+                    <button id="analyze-button" class="mt-4 w-full bg-teal-600 text-white font-semibold py-3 px-4 rounded-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors disabled:bg-slate-400">
+                        Analyze Text
+                    </button>
+                </div>
+
+                <div id="analysis-loader" class="hidden mt-8 flex justify-center">
+                    <div class="loader"></div>
+                </div>
+
+                <div id="analysis-results" class="hidden mt-8 space-y-6">
+                     <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold text-slate-800">Summary</h3>
+                        <p id="summary-output" class="mt-2 text-slate-600"></p>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-semibold text-slate-800">Bias Assessment</h3>
+                            <p id="bias-output" class="mt-2 text-2xl font-bold"></p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-semibold text-slate-800">Sentiment</h3>
+                            <p id="sentiment-output" class="mt-2 text-2xl font-bold"></p>
+                        </div>
+                         <div class="bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-semibold text-slate-800">Confidence</h3>
+                            <p id="confidence-output" class="mt-2 text-2xl font-bold"></p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold text-slate-800">Potential Fallacies & Manipulative Language</h3>
+                        <p id="fallacies-output" class="mt-2 text-slate-600 whitespace-pre-wrap"></p>
+                    </div>
+                </div>
+                 <div id="analysis-error" class="hidden mt-8 p-4 bg-red-100 text-red-700 rounded-md">
+                    <p>Sorry, something went wrong. Please try again.</p>
+                </div>
+            </div>
+        </section>
+
         <section id="future" class="py-16 section-fade-in">
             <div class="text-center">
                 <h2 class="text-3xl font-bold text-slate-900">Future Horizons</h2>
@@ -290,10 +351,10 @@
                     labels: ['ROUGE-1 (Overlap)', 'ROUGE-2 (Phrase Overlap)'],
                     datasets: [{
                         label: 'Model Score (%)',
-                        data: [42.5, 22.5], // Average of the provided ranges
+                        data: [42.5, 22.5],
                         backgroundColor: [
-                            'rgba(13, 148, 136, 0.6)', // teal-600
-                            'rgba(15, 118, 110, 0.6)'  // teal-700
+                            'rgba(13, 148, 136, 0.6)',
+                            'rgba(15, 118, 110, 0.6)'
                         ],
                         borderColor: [
                             'rgba(13, 148, 136, 1)',
@@ -311,21 +372,15 @@
                             beginAtZero: true,
                             max: 50,
                             ticks: {
-                                callback: function(value) {
-                                    return value + "%"
-                                }
+                                callback: function(value) { return value + "%" }
                             }
                         }
                     },
                     plugins: {
-                        legend: {
-                            display: false
-                        },
+                        legend: { display: false },
                         tooltip: {
                             callbacks: {
-                                label: function(context) {
-                                    return `${context.dataset.label}: ${context.raw.toFixed(1)}%`;
-                                }
+                                label: function(context) { return `${context.dataset.label}: ${context.raw.toFixed(1)}%`; }
                             }
                         }
                     }
@@ -341,8 +396,6 @@
                 
                 button.addEventListener('click', () => {
                     const isExpanded = content.style.maxHeight && content.style.maxHeight !== '0px';
-                    
-                    // Close all other items
                     accordionItems.forEach(otherItem => {
                         if (otherItem !== item) {
                             otherItem.querySelector('.accordion-content').style.maxHeight = '0px';
@@ -350,8 +403,6 @@
                             otherItem.querySelector('.accordion-icon').classList.remove('rotate-45');
                         }
                     });
-
-                    // Toggle current item
                     if (isExpanded) {
                         content.style.maxHeight = '0px';
                         icon.textContent = '+';
@@ -373,24 +424,19 @@
                     }
                 });
             }, { threshold: 0.1 });
-
-            sections.forEach(section => {
-                observer.observe(section);
-            });
+            sections.forEach(section => { observer.observe(section); });
             
             // Active Nav Link on Scroll
             const navLinks = document.querySelectorAll('.nav-link');
-            const allSections = document.querySelectorAll('section');
-            
+            const allSections = document.querySelectorAll('main section');
             const onScroll = () => {
                 let currentSection = "";
                 allSections.forEach(section => {
                     const sectionTop = section.offsetTop;
-                    if (pageYOffset >= sectionTop - 80) { // 80 is header height + offset
+                    if (pageYOffset >= sectionTop - 80) {
                         currentSection = section.getAttribute('id');
                     }
                 });
-
                 navLinks.forEach(link => {
                     link.classList.remove('active');
                     if (link.getAttribute('href').substring(1) === currentSection) {
@@ -398,10 +444,84 @@
                     }
                 });
             };
-            
             window.addEventListener('scroll', onScroll);
-            onScroll(); // Set active link on page load
+            onScroll();
 
+            // Gemini API Analysis
+            const analyzeButton = document.getElementById('analyze-button');
+            const articleInput = document.getElementById('article-input');
+            const loader = document.getElementById('analysis-loader');
+            const resultsContainer = document.getElementById('analysis-results');
+            const errorContainer = document.getElementById('analysis-error');
+
+            analyzeButton.addEventListener('click', async () => {
+                const articleText = articleInput.value.trim();
+                if (!articleText) {
+                    alert('Please paste some article text first.');
+                    return;
+                }
+
+                loader.classList.remove('hidden');
+                resultsContainer.classList.add('hidden');
+                errorContainer.classList.add('hidden');
+                analyzeButton.disabled = true;
+
+                const prompt = `Analyze the following news article text. Provide a detailed analysis in a JSON object format. The JSON object must include these exact keys: "summary" (a one-sentence summary), "bias" (classify as 'Left-leaning', 'Center-left', 'Center', 'Center-right', 'Right-leaning', or 'Neutral'), "sentiment" (classify as 'Positive', 'Negative', 'Neutral', or 'Mixed'), "fallacies" (a string explaining any detected logical fallacies, manipulative language, or propaganda techniques; if none, say "No significant fallacies detected."), and "confidence" (a percentage string like "95%" representing your confidence in the overall analysis). Article text: """${articleText}"""`;
+                
+                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                const payload = {
+                    contents: chatHistory,
+                    generationConfig: {
+                        responseMimeType: "application/json",
+                        responseSchema: {
+                            type: "OBJECT",
+                            properties: {
+                                "summary": { "type": "STRING" },
+                                "bias": { "type": "STRING" },
+                                "sentiment": { "type": "STRING" },
+                                "fallacies": { "type": "STRING" },
+                                "confidence": { "type": "STRING" }
+                            },
+                        }
+                    }
+                };
+                const apiKey = "AIzaSyAGRSE2BddQpottV02sSB9y93nqxDPGHDY";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API request failed with status ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    
+                    if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
+                        const analysis = JSON.parse(result.candidates[0].content.parts[0].text);
+                        
+                        document.getElementById('summary-output').textContent = analysis.summary || "N/A";
+                        document.getElementById('bias-output').textContent = analysis.bias || "N/A";
+                        document.getElementById('sentiment-output').textContent = analysis.sentiment || "N/A";
+                        document.getElementById('confidence-output').textContent = analysis.confidence || "N/A";
+                        document.getElementById('fallacies-output').textContent = analysis.fallacies || "N/A";
+                        
+                        resultsContainer.classList.remove('hidden');
+                    } else {
+                        throw new Error("Invalid response structure from API.");
+                    }
+
+                } catch (error) {
+                    errorContainer.classList.remove('hidden');
+                } finally {
+                    loader.classList.add('hidden');
+                    analyzeButton.disabled = false;
+                }
+            });
         });
     </script>
 </body>
