@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Advance: An Interactive Project Memoir</title>
+    <!-- Chosen Palette: Calm Neutral (Light slate/gray background, dark slate text, muted teal accent) -->
+    <!-- Application Structure Plan: A single-page "Project Journey" dashboard. The structure is thematic, not chronological, using a top navigation bar (The Problem, Our Solution, The Tech, The AI, The Future) to guide users. This non-linear approach allows users to explore the project's aspects in any order, enhancing engagement. Key interactions include hover-to-reveal tooltips for the tech stack, an interactive diagram for the AI development story, and accordions for future plans. This is more usable than a long, scrolling document because it breaks down complex information into digestible, interactive chunks. -->
+    <!-- Visualization & Content Choices: Report Info: Project's core problem -> Goal: Inform -> Viz: Icon-driven text cards. Interaction: Static. Justification: Quickly establishes context. | Report Info: Tech stack list -> Goal: Organize/Inform -> Viz: Grid of icons with text. Interaction: Hover for tooltips. Justification: More visually engaging than a list. | Report Info: ROUGE scores -> Goal: Compare/Inform -> Viz: Chart.js horizontal bar chart. Interaction: Static chart. Justification: Quantifies model performance visually. | Report Info: AI pivot narrative -> Goal: Explain Change -> Viz: HTML/CSS diagram. Interaction: Static visual flow. Justification: Clearly illustrates the strategic decision. | Report Info: Future plans -> Goal: Organize -> Viz: Accordion. Interaction: Click to expand. Justification: Keeps the UI clean, allows drill-down. Library/Method: Chart.js for the chart, Vanilla JS and Tailwind for all other interactions and diagrams. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .nav-link.active {
+            color: #0d9488; /* teal-600 */
+            font-weight: 600;
+        }
+        .section-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .section-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <header id="header" class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-teal-700">News Advance</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#problem" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-teal-600 transition-colors">The Problem</a>
+                        <a href="#solution" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-teal-600 transition-colors">Our Solution</a>
+                        <a href="#tech" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-teal-600 transition-colors">The Tech</a>
+                        <a href="#ai-journey" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-teal-600 transition-colors">The AI Journey</a>
+                        <a href="#future" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-teal-600 transition-colors">The Future</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-white hover:bg-teal-600 focus:outline-none">
+                        <span class="sr-only">Open main menu</span>
+                        <span class="block h-6 w-6" aria-hidden="true">☰</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#problem" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:text-teal-600">The Problem</a>
+                <a href="#solution" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:text-teal-600">Our Solution</a>
+                <a href="#tech" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:text-teal-600">The Tech</a>
+                <a href="#ai-journey" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:text-teal-600">The AI Journey</a>
+                <a href="#future" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:text-teal-600">The Future</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <section id="hero" class="text-center py-16 section-fade-in">
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-slate-900">A New Lens for the News</h1>
+            <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-600">An interactive memoir of the News Advance project, an AI-powered tool built to combat misinformation and foster a more informed readership.</p>
+        </section>
+
+        <section id="problem" class="py-16 section-fade-in">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-slate-900">The Spark: Confronting the Information Problem</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg">The digital world gives us more information than ever, but finding the truth is harder. The News Advance project was born from a need to fix this.</p>
+            </div>
+            <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-center">
+                        <span class="text-3xl mr-4">🌪️</span>
+                        <h3 class="text-xl font-semibold text-slate-800">Information Overload</h3>
+                    </div>
+                    <p class="mt-2 text-slate-600">A constant flood of news, opinions, and stories makes it tough to tell the difference between real journalism and fake news.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-center">
+                        <span class="text-3xl mr-4">🫧</span>
+                        <h3 class="text-xl font-semibold text-slate-800">Filter Bubbles</h3>
+                    </div>
+                    <p class="mt-2 text-slate-600">Algorithms show us what we already agree with, creating echo chambers that shield us from different points of view.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-center">
+                        <span class="text-3xl mr-4">🎯</span>
+                        <h3 class="text-xl font-semibold text-slate-800">The Mission</h3>
+                    </div>
+                    <p class="mt-2 text-slate-600">To build a smart helper that uses AI to help people check articles, understand bias, and spot potential misinformation.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="solution" class="py-16 bg-white rounded-xl shadow-lg section-fade-in">
+             <div class="text-center px-4">
+                <h2 class="text-3xl font-bold text-slate-900">Our Solution: A Hybrid AI in Action</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg">News Advance combines specialized AI models and powerful LLMs to provide a multi-layered analysis of any news article.</p>
+            </div>
+            <div class="mt-12 grid gap-8 md:grid-cols-2 px-6">
+                <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <h3 class="text-xl font-semibold text-slate-800">AI-Powered Summarization</h3>
+                    <p class="mt-2 text-slate-600">A custom-trained BART model provides fast, high-quality summaries that capture the main idea of an article without the choppy feel of simpler methods.</p>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <h3 class="text-xl font-semibold text-slate-800">Nuanced Bias & Sentiment Analysis</h3>
+                    <p class="mt-2 text-slate-600">Using a local LLM via Ollama, the system detects political leaning and emotional tone, providing detailed explanations for its conclusions to ensure transparency.</p>
+                </div>
+                 <div class="bg-slate-50 p-6 rounded-lg border border-slate-200 md:col-span-2">
+                    <h3 class="text-xl font-semibold text-slate-800">Unified User Experience</h3>
+                    <p class="mt-2 text-slate-600">All analyses are presented on a single, clean interface. Users see the article, its summary, a bias spectrum visualization, and a sentiment breakdown, turning them into critical analysts.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="tech" class="py-16 section-fade-in">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-slate-900">The Blueprint: Our Tech Stack</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg">We chose best-in-class, open-source tools to build a powerful and flexible system. Hover over an icon to learn more.</p>
+            </div>
+            <div class="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 text-center">
+                <div class="tech-card bg-white p-6 rounded-lg shadow-md" data-info="We chose Django for its 'batteries-included' philosophy, MVT architecture, and robust security features, which saved huge amounts of development time.">
+                    <h3 class="text-xl font-semibold">Django 5.2</h3>
+                    <p class="text-sm text-slate-500 mt-1">Backend Framework</p>
+                </div>
+                <div class="tech-card bg-white p-6 rounded-lg shadow-md" data-info="Python's clear syntax and vast ecosystem of libraries made it the perfect language to connect our web app with our AI analysis tools.">
+                    <h3 class="text-xl font-semibold">Python 3.8+</h3>
+                    <p class="text-sm text-slate-500 mt-1">Programming Language</p>
+                </div>
+                <div class="tech-card bg-white p-6 rounded-lg shadow-md" data-info="Used for its simplicity in development. The system is designed to switch to PostgreSQL for its robustness in a live production environment.">
+                    <h3 class="text-xl font-semibold">SQLite / PostgreSQL</h3>
+                    <p class="text-sm text-slate-500 mt-1">Database</p>
+                </div>
+                <div class="tech-card bg-white p-6 rounded-lg shadow-md" data-info="We used standard HTML, CSS, and JS with the Bootstrap 5 framework to build a responsive, mobile-first design that works well on all devices.">
+                    <h3 class="text-xl font-semibold">HTML/CSS/JS</h3>
+                    <p class="text-sm text-slate-500 mt-1">Frontend Interface</p>
+                </div>
+                <div class="tech-card bg-white p-6 rounded-lg shadow-md" data-info="This powerful library from Hugging Face was essential for fine-tuning our custom BART model for text summarization.">
+                    <h3 class="text-xl font-semibold">Transformers</h3>
+                    <p class="text-sm text-slate-500 mt-1">AI/NLP Library</p>
+                </div>
+                <div class="tech-card bg-white p-6 rounded-lg shadow-md" data-info="A game-changing tool that lets us run powerful, open-source LLMs locally for nuanced bias and sentiment analysis, ensuring privacy and cost-effectiveness.">
+                    <h3 class="text-xl font-semibold">Ollama</h3>
+                    <p class="text-sm text-slate-500 mt-1">Local LLM Framework</p>
+                </div>
+                <div class="tech-card bg-white p-6 rounded-lg shadow-md" data-info="These tools formed the heart of our data-gathering system, allowing us to fetch, parse, and clean articles from across the messy, unpredictable web.">
+                    <h3 class="text-xl font-semibold">Newspaper3k</h3>
+                    <p class="text-sm text-slate-500 mt-1">Data Gathering</p>
+                </div>
+                <div class="tech-card bg-white p-6 rounded-lg shadow-md" data-info="Also part of our data gathering pipeline, BeautifulSoup4 helped us understand and extract content from websites with unique and complex layouts.">
+                    <h3 class="text-xl font-semibold">BeautifulSoup4</h3>
+                    <p class="text-sm text-slate-500 mt-1">Data Parsing</p>
+                </div>
+            </div>
+            <div id="tooltip" class="hidden absolute z-10 p-2 text-sm text-white bg-slate-800 rounded-md shadow-lg"></div>
+        </section>
+
+        <section id="ai-journey" class="py-16 bg-white rounded-xl shadow-lg section-fade-in">
+            <div class="text-center px-4">
+                <h2 class="text-3xl font-bold text-slate-900">Building the Brains: The AI Journey</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg">Our AI development was a story of planned success and strategic adaptation when faced with unexpected challenges.</p>
+            </div>
+            <div class="mt-12 grid lg:grid-cols-2 gap-12 items-start px-6">
+                <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <h3 class="text-2xl font-semibold text-slate-800">Path 1: A Custom-Trained Success</h3>
+                    <p class="mt-3 text-slate-600">Our first goal was to build a custom summarization model. We fine-tuned the BART architecture on the BBC News Summary dataset. The result was a big win, proving we could build our own specialized AI solutions.</p>
+                    <div class="mt-6">
+                        <h4 class="font-semibold text-slate-700">Model Performance (ROUGE Scores)</h4>
+                        <div class="chart-container relative w-full max-w-md mx-auto h-56 mt-2">
+                            <canvas id="rougeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <h3 class="text-2xl font-semibold text-slate-800">Path 2: The Strategic Pivot</h3>
+                    <p class="mt-3 text-slate-600">When we tried to build a bias detection model, we hit a wall: no good, neutral training data existed. Instead of giving up, we pivoted to a better solution.</p>
+                    <div class="mt-6 flow-root">
+                        <div class="relative">
+                            <div class="flex items-center space-x-4">
+                                <div class="bg-red-100 text-red-700 p-3 rounded-lg">Problem</div>
+                                <div class="flex-1 border-t-2 border-dashed border-slate-300"></div>
+                                <div class="text-3xl">➡️</div>
+                                <div class="bg-teal-100 text-teal-700 p-3 rounded-lg">Solution</div>
+                            </div>
+                            <div class="mt-2 grid grid-cols-2 gap-4 text-sm">
+                                <p class="text-red-900">Lack of high-quality, neutral datasets for political bias.</p>
+                                <p class="text-teal-900">Integrated Ollama to run powerful LLMs locally for nuanced, explainable, and private analysis.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mt-6 text-slate-600 font-medium">This smart move ahead let us deliver a bias analysis feature that was far superior to what we had originally imagined.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="future" class="py-16 section-fade-in">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-slate-900">Future Horizons</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg">The journey isn't over. Our future plans are ambitious, aiming to make News Advance an even more essential tool.</p>
+            </div>
+            <div id="accordion" class="mt-12 max-w-3xl mx-auto space-y-4">
+                <div class="accordion-item bg-white rounded-lg shadow-md">
+                    <button class="accordion-button w-full flex justify-between items-center text-left p-4 font-semibold text-slate-800">
+                        <span>Advanced NLP & Granular Analysis</span>
+                        <span class="accordion-icon transform transition-transform text-teal-500 text-2xl">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <p class="p-4 pt-0 text-slate-600">We plan to train models to do even more detailed analysis, like identifying specific logical fallacies (e.g., personal attacks) or common propaganda tricks.</p>
+                    </div>
+                </div>
+                <div class="accordion-item bg-white rounded-lg shadow-md">
+                    <button class="accordion-button w-full flex justify-between items-center text-left p-4 font-semibold text-slate-800">
+                        <span>Comprehensive Fact-Checking</span>
+                        <span class="accordion-icon transform transition-transform text-teal-500 text-2xl">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <p class="p-4 pt-0 text-slate-600">A top priority is to build out our fact-checking feature. This means creating a system that can automatically pull out key claims from an article and check them against trusted fact-checking sites like PolitiFact, Snopes, and Reuters in real time.</p>
+                    </div>
+                </div>
+                <div class="accordion-item bg-white rounded-lg shadow-md">
+                    <button class="accordion-button w-full flex justify-between items-center text-left p-4 font-semibold text-slate-800">
+                        <span>API Development</span>
+                        <span class="accordion-icon transform transition-transform text-teal-500 text-2xl">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <p class="p-4 pt-0 text-slate-600">To increase our impact, we'll create a RESTful API. This will let other news apps, researchers, and developers use our analysis tools in their own projects, helping us spread our mission.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-slate-800 text-white">
+        <div class="container mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2025 Nacir Chahine. The News Advance Project.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Tech Stack Tooltip
+            const techCards = document.querySelectorAll('.tech-card');
+            const tooltip = document.getElementById('tooltip');
+            techCards.forEach(card => {
+                card.addEventListener('mouseenter', (e) => {
+                    tooltip.textContent = card.dataset.info;
+                    tooltip.classList.remove('hidden');
+                    const rect = card.getBoundingClientRect();
+                    tooltip.style.left = `${rect.left + window.scrollX}px`;
+                    tooltip.style.top = `${rect.top + window.scrollY - tooltip.offsetHeight - 10}px`;
+                });
+                card.addEventListener('mouseleave', () => {
+                    tooltip.classList.add('hidden');
+                });
+            });
+
+            // ROUGE Score Chart
+            const ctx = document.getElementById('rougeChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['ROUGE-1 (Overlap)', 'ROUGE-2 (Phrase Overlap)'],
+                    datasets: [{
+                        label: 'Model Score (%)',
+                        data: [42.5, 22.5], // Average of the provided ranges
+                        backgroundColor: [
+                            'rgba(13, 148, 136, 0.6)', // teal-600
+                            'rgba(15, 118, 110, 0.6)'  // teal-700
+                        ],
+                        borderColor: [
+                            'rgba(13, 148, 136, 1)',
+                            'rgba(15, 118, 110, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 50,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + "%"
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.raw.toFixed(1)}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Accordion
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            accordionItems.forEach(item => {
+                const button = item.querySelector('.accordion-button');
+                const content = item.querySelector('.accordion-content');
+                const icon = item.querySelector('.accordion-icon');
+                
+                button.addEventListener('click', () => {
+                    const isExpanded = content.style.maxHeight && content.style.maxHeight !== '0px';
+                    
+                    // Close all other items
+                    accordionItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.querySelector('.accordion-content').style.maxHeight = '0px';
+                            otherItem.querySelector('.accordion-icon').textContent = '+';
+                            otherItem.querySelector('.accordion-icon').classList.remove('rotate-45');
+                        }
+                    });
+
+                    // Toggle current item
+                    if (isExpanded) {
+                        content.style.maxHeight = '0px';
+                        icon.textContent = '+';
+                        icon.classList.remove('rotate-45');
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        icon.textContent = '+';
+                        icon.classList.add('rotate-45');
+                    }
+                });
+            });
+
+            // Section Fade-in on Scroll
+            const sections = document.querySelectorAll('.section-fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Active Nav Link on Scroll
+            const navLinks = document.querySelectorAll('.nav-link');
+            const allSections = document.querySelectorAll('section');
+            
+            const onScroll = () => {
+                let currentSection = "";
+                allSections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 80) { // 80 is header height + offset
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === currentSection) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+            
+            window.addEventListener('scroll', onScroll);
+            onScroll(); // Set active link on page load
+
+        });
+    </script>
+</body>
+</html>
