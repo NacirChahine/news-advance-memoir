@@ -490,8 +490,13 @@
                         }
                     }
                 };
+				// Change the model name to use the latest version of Flash
+				// const model = 'gemma-7b'; // Gemma model (less reliable for our specific prompt)
+				// const model = 'gemini-2.5-flash-preview-05-20'; // specify version
+				// const model = 'gemini-1.5-flash-latest';
+				const model = 'gemini-2.5-flash-preview-05-20';
                 const apiKey = "AIzaSyByYVDibIudRkxvwBslmx0ZBksp0FMzFV0";
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
                 try {
                     const response = await fetch(apiUrl, {
