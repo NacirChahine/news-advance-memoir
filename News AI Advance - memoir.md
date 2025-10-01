@@ -30,93 +30,93 @@ Academic year
 
 [Abstract](#abstract)	5
 
-[Acknowledgments](#acknowledgments)	5
+[Acknowledgments](#acknowledgments)	6
 
-[Dedication](#dedication)	6
+[Dedication](#dedication)	7
 
-[General Introduction](#general-introduction)	6
+[General Introduction](#general-introduction)	8
 
-[Chapter 0: The Spark of an Idea \- Dealing With the Information Problem](#chapter-0:-the-spark-of-an-idea---dealing-with-the-information-problem)	 7
+[Chapter 0: The Spark of an Idea \- Dealing With the Information Problem](#chapter-0:-the-spark-of-an-idea---dealing-with-the-information-problem)	 9
 
-[Chapter1: Business Requirement](#chapter1:-business-requirement)	 8
+[Chapter1: Business Requirement](#chapter1:-business-requirement)	 10
 
-[1.1-Functions and features:](#1.1-introduction)	8
+[1.1-Functions and features:](#1.1-introduction)	10
 
-[1.2-Tools and libraries requirement](#1.2-tools-and-libraries-requirement)	9
+[1.2-Tools and libraries requirement](#1.2-tools-and-libraries-requirement)	11
 
-[1.3-Overview of Web Scraping](#1.3-overview-of-news-advance)	9
+[1.3-Overview of Web Scraping](#1.3-overview-of-news-advance)	11
 
-[1.4-Overview Django](#1.4-overview-django)	11
+[1.4-Overview Django](#1.4-overview-django)	13
 
-[1.5-Conclusion](#1.5-conclusion)	11
+[1.5-Conclusion](#1.5-conclusion)	13
 
-[Chapter 2: Development Tools](#chapter-2:-development-tools)	12
+[Chapter 2: Development Tools](#chapter-2:-development-tools)	14
 
-[2.1-Introduction](#2.1-introduction)	12
+[2.1-Introduction](#2.1-introduction)	14
 
-[2.2-PyCharm](#2.2-pycharm)	12
+[2.2-PyCharm](#2.2-pycharm)	14
 
-[2.3-Python](#2.3-python)	13
+[2.3-Python](#2.3-python)	15
 
-[2.4-Ollama](#2.4-ollama)	14
+[2.4-Ollama](#2.4-ollama)	16
 
-[2.4.1-llama3](#2.4.1-llama3)	15
+[2.4.1-llama3](#2.4.1-llama3)	17
 
-[2.4.2-Custom summary model trained on bbc data](#2.4.1-llama3)	15
+[2.4.2-Custom summary model trained on bbc data](#2.4.1-llama3)	17
 
-[2.5-Conclusion](#2.5-conclusion)	15
+[2.5-Conclusion](#2.5-conclusion)	17
 
-[Chapter 3: Unified Modeling Language](#chapter3:-modeling-and-conception)	17
+[Chapter 3: Unified Modeling Language](#chapter3:-modeling-and-conception)	19
 
-[3.1-Introduction](#3.1-introduction)	17
+[3.1-Introduction](#3.1-introduction)	19
 
-[3.2-What is UML](#3.2-what-is-unified-modeling-language-\(uml\))	17
+[3.2-What is UML](#3.2-what-is-unified-modeling-language-\(uml\))	19
 
-[3.3-Use Case Diagram](#3.3-use-case-diagram)	18
+[3.3-Use Case Diagram](#3.3-use-case-diagram)	20
 
-[3.4-Class Diagram](#3.4-class-diagram)	24
+[3.4-Class Diagram](#3.4-class-diagram)	26
 
-[3.5-Conclusion](#3.5-conclusion)	28
+[3.5-Conclusion](#3.5-conclusion)	30
 
-Chapter 4: From Code to Experience — Implementation and Demonstration	29
+Chapter 4: From Code to Experience — Implementation and Demonstration	31
 
-4[.1-Introduction](#heading=h.ak2wf2quppxp)	29
+4[.1-Introduction](#heading=h.ak2wf2quppxp)	31
 
-4.2-Platform and Tools used	29
+4.2-Platform and Tools used	31
 
-4.3-MVT: (Model-View-Template) in this project	30
+4.3-MVT: (Model-View-Template) in this project	32
 
-4.4-Backend admin customization and data management	34
+4.4-Backend admin customization and data management	36
 
-4.5-Application Programming Interface (APIs)	36
+4.5-Application Programming Interface (APIs)	38
 
-4.6-Aggregation pipeline and management commands	37
+4.6-Aggregation pipeline and management commands	39
 
-4.7-Analysis pipeline overview	38
+4.7-Analysis pipeline overview	40
 
-4.8-Fact-checking and logical fallacies	38
+4.8-Fact-checking and logical fallacies	40
 
-4.9-Summarization and fallback strategy	40
+4.9-Summarization and fallback strategy	42
 
-4.10-UI/UX and user preferences	41
+4.10-UI/UX and user preferences	43
 
-4.11-Source reliability scoring	43
+4.11-Source reliability scoring	45
 
-4.12-UI/UX: screens, interactions, and error handling	44
+4.12-UI/UX: screens, interactions, and error handling	46
 
-4.13-Development timeline and methodology	46
+4.13-Development timeline and methodology	48
 
-4.14-Testing strategy and QA	46
+4.14-Testing strategy and QA	48
 
-4.15-Deployment and production setup	46
+4.15-Deployment and production setup	48
 
-4.16-Conclusion	47
+4.16-Conclusion	49
 
-[Conclusion](#conclusion)	48
+[Conclusion](#conclusion)	50
 
-Perspective	49
+Perspective	51
 
-References	49
+References	52
 
 ## **Table of Figure**
 
